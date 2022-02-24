@@ -1,0 +1,32 @@
+[
+  {
+    "model": "users.user",
+    "pk": "1bd5f199-8041-4822-87e7-400f17dffc02",
+    "fields": {
+      "first_name": "John",
+      "last_name": "Snow",
+      "username": "johnsnow",
+      "email": "snow@gmail.com"
+    }
+  },
+  {
+    "model": "users.user",
+    "pk": "bcb2c876-d533-47be-9312-628d09f82387",
+    "fields": {
+      "first_name": "Cersei",
+      "last_name": "Lannister",
+      "username": "cerseilannister",
+      "email": "lannister@gmail.com"
+    }
+  },
+  {
+    "model": "users.user",
+    "pk": "ebd04e2b-ff95-4e3a-adfe-07cfc5041a6a",
+    "fields": {
+      "first_name": "Ned",
+      "last_name": "Stark",
+      "username": "nedstark",
+      "email": "stark@gmail.com"
+    }
+  }
+]

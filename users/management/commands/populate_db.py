@@ -3,7 +3,6 @@ from django.core.management.base import BaseCommand
 from django.db import transaction
 
 from users.models import User
-from django.contrib.auth.models import User as AuthUser
 
 
 def load_from_json(file_name):
@@ -24,5 +23,5 @@ class Command(BaseCommand):
             new_user = User(pk=pk, **item)
             new_user.save()
 
-        if not AuthUser.objects.filter(username='django').exists():
-            AuthUser.objects.create_superuser(username='django', email='django@gb.ru', password='geekbrains')
+        if not User.objects.filter(username='django').exists():
+            User.objects.create_superuser(username='django', email='django@gb.ru', password='geekbrains')

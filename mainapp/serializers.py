@@ -15,6 +15,10 @@ class UserListingSerializer(PrimaryKeyRelatedField, serializers.ModelSerializer)
     def to_representation(self, value):
         return f'{value.get_username()}'
 
+    def to_internal_value(self, data):
+        obj = User.objects.get(username=data)
+        return obj
+
 
 class ProjectListingSerializer(PrimaryKeyRelatedField, serializers.ModelSerializer):
     class Meta:
@@ -40,8 +44,8 @@ class TodoModelSerializer(HyperlinkedModelSerializer):
 
     def create(self, validated_data):
         project_data = validated_data.pop('project')
-        Project.objects.create(users=[self.author], **project_data)
         todo = Todo.objects.create(**validated_data)
+        todo.project = Project.objects.get(name=project_data)
+        todo.save()
 
         return todo
-

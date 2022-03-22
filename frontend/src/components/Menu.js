@@ -2,15 +2,15 @@ import React from "react";
 
 const items = [
     {
-        "name": "ToDos",
+        "name": "Users",
         href: "#"
     },
     {
-        "name": "About",
+        "name": "Projects",
         href: "#"
     },
     {
-        "name": "Main Page",
+        "name": "Todos",
         href: "#"
     }
 ]

@@ -78,3 +78,15 @@ li a {
 li a:hover {
   background-color: #111111;
 }
+
+table {
+  border-collapse: collapse;
+
+}
+
+th, td {
+  padding: 15px;
+  text-align: left;
+}
+
+tr:hover {background-color: lightgray;}

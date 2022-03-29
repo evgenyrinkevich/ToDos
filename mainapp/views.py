@@ -1,3 +1,4 @@
+from rest_framework import permissions
 from rest_framework.viewsets import ModelViewSet
 
 from .pagination_settings import ProjectLimitOffsetPagination, ToDoLimitOffsetPagination
@@ -7,6 +8,7 @@ from mainapp.serializers import ProjectModelSerializer, TodoModelSerializer
 
 
 class ProjectModelViewSet(ModelViewSet):
+    permission_classes = (permissions.IsAuthenticated,)
     queryset = Project.objects.all()
     serializer_class = ProjectModelSerializer
     filterset_class = ProjectFilter
@@ -14,6 +16,7 @@ class ProjectModelViewSet(ModelViewSet):
 
 
 class TodoModelViewSet(ModelViewSet):
+    permission_classes = (permissions.IsAuthenticated,)
     queryset = Todo.objects.all()
     serializer_class = TodoModelSerializer
     filterset_class = ToDoFilter

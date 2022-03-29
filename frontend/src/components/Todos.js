@@ -35,7 +35,7 @@ const TodoList = ({todos}) => {
             <th>
                 Is Active
             </th>
-            {todos.map((todo) => <TodoItem todo={todo} />)}
+            {todos.map((todo, index) => <TodoItem todo={todo} key={index} />)}
         </table>
     )
 }

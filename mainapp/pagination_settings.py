@@ -6,4 +6,4 @@ class ProjectLimitOffsetPagination(LimitOffsetPagination):
 
 
 class ToDoLimitOffsetPagination(LimitOffsetPagination):
-    default_limit = 20
+    default_limit = 50

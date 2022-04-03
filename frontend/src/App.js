@@ -89,7 +89,7 @@ class App extends React.Component {
             password: password
         })
             .then(response => {
-                this.setTokens(response.data)
+                this.setTokens(response.data);
             })
             .catch(error => alert('Wrong username or password')
             )

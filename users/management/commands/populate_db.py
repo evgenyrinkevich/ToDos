@@ -5,7 +5,7 @@ from users.factory import UserFactory
 from users.models import User
 
 
-NUM_USERS = 5
+NUM_USERS = 50
 
 
 class Command(BaseCommand):

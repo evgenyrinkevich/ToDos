@@ -9,6 +9,7 @@ import ProjectList from "./components/Project";
 import LoginForm from "./components/Auth";
 import {BrowserRouter, Route, Link, Switch, Redirect} from 'react-router-dom';
 import Cookies from "universal-cookie";
+import ProjectForm from "./components/ProjectForm";
 
 
 const NotFound404 = ({location}) => {
@@ -105,11 +106,35 @@ class App extends React.Component {
         return headers
     }
 
+    deleteProject(id) {
+        const headers = this.getHeaders();
+        axios.delete(`http://127.0.0.1:8000/api/projects/${id}`, {headers})
+            .then(response => {
+                this.setState({projects: this.state.projects.filter((item) => item.id !== id)})
+            }).catch(error => console.log(error))
+    }
+
+    createProject(name, users, githubUrl) {
+        const headers = this.getHeaders();
+        const data = {
+            name: name,
+            users: [],
+            githubUrl: githubUrl
+        }
+        const usernames = this.state.users.filter((item) => users.includes(item["uid"]));
+        usernames.forEach((item) => data.users.push(item.username));
+        axios.post(`http://127.0.0.1:8000/api/projects/`, data, {headers})
+            .then(response => {
+                let new_project = response.data;
+                this.setState({projects: [...this.state.projects, new_project]})
+            }).catch(error => console.log(error))
+    }
+
     loadData() {
         const headers = this.getHeaders();
         axios.get('http://127.0.0.1:8000/api/users', {headers})
             .then(response => {
-                const users = response.data.results
+                const users = response.data.results;
                 this.setState(
                     {
                         'users': users
@@ -125,7 +150,7 @@ class App extends React.Component {
 
         axios.get('http://127.0.0.1:8000/api/projects', {headers})
             .then(response => {
-                const projects = response.data.results
+                const projects = response.data.results;
                 this.setState(
                     {
                         'projects': projects
@@ -189,8 +214,11 @@ class App extends React.Component {
                     <Switch>
                         <Route exact path='/' component={() => <UsersList
                             users={this.state.users}/>}/>
+                        <Route exact path='/projects/create' component={() => <ProjectForm
+                            allUsers={this.state.users}
+                            createProject={(name, users, githubUrl) => this.createProject(name, users, githubUrl)}/>}/>
                         <Route exact path='/projects' component={() => <ProjectsList
-                            projects={this.state.projects}/>}/>
+                            projects={this.state.projects} deleteProject={(id)=>this.deleteProject(id)}/>}/>
                         <Route exact path='/todos' component={() => <TodoList
                             todos={this.state.todos}/>}/>
                         <Route exact path='/login' component={() => <LoginForm

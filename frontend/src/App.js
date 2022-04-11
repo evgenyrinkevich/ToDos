@@ -10,6 +10,7 @@ import LoginForm from "./components/Auth";
 import {BrowserRouter, Route, Link, Switch, Redirect} from 'react-router-dom';
 import Cookies from "universal-cookie";
 import ProjectForm from "./components/ProjectForm";
+import TodoForm from "./components/TodoForm";
 
 
 const NotFound404 = ({location}) => {
@@ -114,6 +115,14 @@ class App extends React.Component {
             }).catch(error => console.log(error))
     }
 
+    deleteTodo(id) {
+        const headers = this.getHeaders();
+        axios.delete(`http://127.0.0.1:8000/api/todos/${id}`, {headers})
+            .then(response => {
+                this.setState({todos: this.state.todos.filter((item) => item.id !== id)})
+            }).catch(error => console.log(error))
+    }
+
     createProject(name, users, githubUrl) {
         const headers = this.getHeaders();
         const data = {
@@ -127,7 +136,28 @@ class App extends React.Component {
             .then(response => {
                 let new_project = response.data;
                 this.setState({projects: [...this.state.projects, new_project]})
-            }).catch(error => console.log(error))
+            }).catch(error => console.log(error));
+        this.loadData()
+    }
+    
+    createTodo(project, text, author, isActive) {
+        const headers = this.getHeaders();
+        const data = {
+            project: project,
+            text: text,
+            author: author,
+            isActive: isActive
+        }
+        axios.post(`http://127.0.0.1:8000/api/todos/`, data, {headers})
+            .then(response => {
+                let new_todo = response.data;
+                let project = this.state.projects.filter((item) => item.id === +project)[0];
+                let author = this.state.users.filter((item) => item.uid === author)[0];
+                new_todo.project = project;
+                new_todo.author = author;
+                this.setState({todos: [...this.state.todos, new_todo]});
+            }).catch(error => console.log(error));
+        this.loadData()
     }
 
     loadData() {
@@ -219,8 +249,11 @@ class App extends React.Component {
                             createProject={(name, users, githubUrl) => this.createProject(name, users, githubUrl)}/>}/>
                         <Route exact path='/projects' component={() => <ProjectsList
                             projects={this.state.projects} deleteProject={(id)=>this.deleteProject(id)}/>}/>
+                        <Route exact path='/todos/create' component={() => <TodoForm
+                            authors={this.state.users} projects={this.state.projects}
+                            createTodo={(project, text, author, isActive) => this.createTodo(project, text, author, isActive)}/>}/>
                         <Route exact path='/todos' component={() => <TodoList
-                            todos={this.state.todos}/>}/>
+                            todos={this.state.todos} deleteTodo={(id)=>this.deleteTodo(id)} />}/>
                         <Route exact path='/login' component={() => <LoginForm
                             getToken={(username, password) => {
                                 this.getToken(username, password);

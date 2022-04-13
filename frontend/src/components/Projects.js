@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import {Link} from 'react-router-dom';
 
 
@@ -24,8 +24,22 @@ const ProjectItem = ({project, deleteProject}) => {
 }
 
 const ProjectsList = ({projects, deleteProject}) => {
+    const [filteredData, setFilteredData] = useState(projects);
+    const handleFilter = (event) => {
+        const searchWord = event.target.value;
+        const filter = projects.filter((value) => {
+            return value.name.toLowerCase().includes(searchWord.toLowerCase());
+        });
+        if (searchWord === "") {
+            setFilteredData(projects);
+        } else {
+            setFilteredData(filter);
+        }
+
+    }
     return (
         <div>
+            <input type="text" placeholder="Search by name" onChange={handleFilter}/>
             <table>
                 <th>
                     Project Name
@@ -37,7 +51,7 @@ const ProjectsList = ({projects, deleteProject}) => {
                     Users
                 </th>
                 <th></th>
-                {projects.map((project, index) => <ProjectItem project={project} deleteProject={deleteProject}
+                {filteredData.map((project, index) => <ProjectItem project={project} deleteProject={deleteProject}
                                                                key={index}/>)}
             </table>
             <Link to='/projects/create'>Create</Link>

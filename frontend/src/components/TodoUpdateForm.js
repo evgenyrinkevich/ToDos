@@ -1,13 +1,17 @@
 import React from "react";
+import {withRouter} from "react-router-dom";
 
-class TodoForm extends React.Component {
+class TodoUpdateForm extends React.Component {
     constructor(props) {
         super(props);
+        let todo = this.props.todos.filter((item) => item.id === +this.props.match.params.id)[0];
+        let project = this.props.projects.filter((item) => item.name === todo.project)[0];
+        let author = this.props.authors.filter((item) => item.username === todo.author)[0];
         this.state = {
-            project: props.projects[0]?.id,
-            text: '',
-            author: '',
-            isActive: false
+            project: project.id,
+            text: todo.text,
+            author: author.uid,
+            isActive: todo.isActive
         }
     }
 
@@ -21,7 +25,7 @@ class TodoForm extends React.Component {
     }
 
     handleSubmit(event) {
-        this.props.createTodo(this.state.project, this.state.text, this.state.author, this.state.isActive);
+        this.props.updateTodo(this.props.match.params.id, this.state.project, this.state.text, this.state.author, this.state.isActive);
         event.preventDefault()
     }
 
@@ -30,7 +34,7 @@ class TodoForm extends React.Component {
             <form onSubmit={(event) => this.handleSubmit(event)}>
                 <div className="form-group">
                     <label htmlFor="project">project</label>
-                    <select name="project" className="form-control" onChange={(event => this.handleChange(event))}>
+                    <select name="project" className="form-control" defaultValue={this.state.project} onChange={(event => this.handleChange(event))}>
                         {this.props.projects.map((item) => <option value={item.id} key={item.id}>{item.name}</option>)}
                     </select>
                 </div>
@@ -41,13 +45,13 @@ class TodoForm extends React.Component {
                 </div>
                 <div className="form-group">
                     <label htmlFor="author">author</label>
-                    <select name="author" className="form-control" onChange={(event => this.handleChange(event))}>
+                    <select name="author" className="form-control" defaultValue={this.state.author} onChange={(event => this.handleChange(event))}>
                         {this.props.authors.map((item) => <option value={item.uid} key={item.uid}>{item.username}</option>)}
                     </select>
                 </div>
                 <div className="form-group">
                     <label htmlFor="isActive">isActive</label>
-                    <input type="checkbox" className="form-control" name="isActive" value={this.state.isActive} // check bool
+                    <input type="checkbox" className="form-control" name="isActive" checked={this.state.isActive}
                            onChange={(event) => this.handleChange(event)}/>
                 </div>
                 <input type="submit" className="btn btn-primary" value="Save"/>
@@ -56,4 +60,4 @@ class TodoForm extends React.Component {
     }
 }
 
-export default TodoForm
+export default withRouter(TodoUpdateForm)

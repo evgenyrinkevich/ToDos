@@ -18,6 +18,11 @@ const TodoItem = ({todo, deleteTodo}) => {
                 {todo.isActive === true? "Y": "N" }
             </td>
             <td><button onClick={()=>deleteTodo(todo.id)} type='button'>Delete</button></td>
+            <td>
+                <Link to={"/todos/update/" + todo.id}>
+                    <button type='button'>Update</button>
+                </Link>
+            </td>
         </tr>
     )
 }
@@ -38,6 +43,7 @@ const TodoList = ({todos, deleteTodo}) => {
                 <th>
                     Is Active
                 </th>
+                <th></th>
                 <th></th>
                 {todos.map((todo, index) => <TodoItem todo={todo} key={index} deleteTodo={deleteTodo} />)}
             </table>

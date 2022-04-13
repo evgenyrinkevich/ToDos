@@ -188,7 +188,7 @@ REST_FRAMEWORK = {
 
 SIMPLE_JWT = {
     'USER_ID_FIELD': 'uid',
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=1),
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=15),
 }
 
 GRAPHENE = {

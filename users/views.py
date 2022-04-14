@@ -7,7 +7,7 @@ from users.serializers import UserModelSerializer, UserModelBaseSerializer
 
 # API versioning test
 class UserModelAPIVersionView(generics.ListAPIView):
-    permission_classes = (permissions.DjangoModelPermissionsOrAnonReadOnly,)
+    # permission_classes = (permissions.DjangoModelPermissionsOrAnonReadOnly,)
     queryset = User.objects.all()
     serializer_class = UserModelSerializer
 
@@ -21,7 +21,7 @@ class UserModelViewSet(mixins.RetrieveModelMixin,
                        mixins.UpdateModelMixin,
                        mixins.ListModelMixin,
                        GenericViewSet):
-    permission_classes = (permissions.IsAuthenticated,)
+    # permission_classes = (permissions.IsAuthenticated,)
     queryset = User.objects.all()
     serializer_class = UserModelSerializer
 
